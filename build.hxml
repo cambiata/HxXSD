@@ -1,0 +1,9 @@
+-p src
+-p test
+-m TestXsd
+
+-D analyzer-optimize
+
+--interp
+
+-L utest
