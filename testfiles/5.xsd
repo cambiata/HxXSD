@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="PersonType">
+        <xs:sequence>
+            <xs:element name="Forename" type="xs:string" />
+            <xs:element name="Surname" type="xs:string" />
+        </xs:sequence>
+        <xs:attribute name="Gender">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="male" />
+                    <xs:enumeration value="female" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="EmployeeType">
+        <xs:complexContent>
+            <xs:extension base="PersonType">
+                <xs:sequence>
+                    <xs:element name="Salary" type="xs:decimal" />
+                </xs:sequence>
+                <xs:attribute name="EmployeeID" type="xs:int" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

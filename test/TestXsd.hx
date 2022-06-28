@@ -1,7 +1,7 @@
 import haxe.io.Path;
 import sys.io.File;
 import sys.FileSystem;
-import xsd.XsdTools;
+import xsd.Xsd;
 
 function main() {
 	utest.UTest.run([new Test1()]);
@@ -16,8 +16,11 @@ class Test1 implements utest.ITest {
 		for (file in xsdFiles) {
 			final content = File.getContent(Path.join([path, file]));
 			final xml = Xml.parse(content);
-			// trace(xml.firstElement());
+
 			final schema = Schema.parse(xml);
+			trace('==================================');
+			trace(file);
+			trace('----------------------------------');
 			trace(schema);
 		}
 	}
