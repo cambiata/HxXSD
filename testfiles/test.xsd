@@ -1,0 +1,90 @@
+<xs:schema>
+
+    <xs:complexType name="typed-text">
+        <xs:annotation>
+            <xs:documentation>The typed-text type represents a text element with a type attributes.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="type" type="xs:token"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="opus">
+        <xs:annotation>
+            <xs:documentation>The opus type represents a link to a MusicXML opus document that composes multiple MusicXML scores into a collection.</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="link-attributes"/>
+    </xs:complexType>
+
+    <xs:complexType name="work">
+        <xs:annotation>
+            <xs:documentation>Works are optionally identified by number and title. The work type also may indicate a link to the opus document that composes multiple scores into a collection.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="work-number" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>The work-number element specifies the number of a work, such as its opus number.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="work-title" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>The work-title element specifies the title of a work, not including its opus or other work number.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="opus" type="opus" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:group name="score-header">
+        <xs:annotation>
+            <xs:documentation>The score-header group contains basic score metadata about the work and movement, score-wide defaults for layout and fonts, credits that appear on the first or following pages, and the part list.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="work" type="work" minOccurs="0"/>
+            <xs:element name="movement-number" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>The movement-number element specifies the number of a movement.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="movement-title" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>The movement-title element specifies the title of a movement, not including its number.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="identification" type="identification" minOccurs="0"/>
+            <xs:element name="defaults" type="defaults" minOccurs="0"/>
+            <xs:element name="credit" type="credit" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="part-list" type="part-list"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="score-partwise" block="extension substitution" final="#all">
+        <xs:annotation>
+            <xs:documentation>The score-partwise element is the root element for a partwise MusicXML score. It includes a score-header group followed by a series of parts with measures inside. The document-attributes attribute group includes the version attribute.</xs:documentation>
+        </xs:annotation>
+
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="score-header"/>
+                <xs:element name="part" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="measure" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:group ref="music-data"/>
+                                    <xs:attributeGroup ref="measure-attributes"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attributeGroup ref="part-attributes"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="document-attributes"/>
+        </xs:complexType>
+
+    </xs:element>
+
+</xs:schema>
